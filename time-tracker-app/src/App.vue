@@ -3,15 +3,30 @@
     <img alt="Vue logo" src="./assets/logo.png" height="200">
     <h1>Time Tracker App</h1>
     <div id="form">
-    <h2>Create a Task</h2>
-    <div class="form">
-      <input type="text" class="form-input" v-model="taskName" placeholder="Run, rest, eat..." required>
-      <button v-if="!hasStarted" class="start-button" onclick="startTask">Start</button>
-      <button v-if="hasStarted" class="stop-button" onclick="stopTask">Stop</button>
+      <h2>Create a Task</h2>
+      <div class="form">
+        <input type="text" class="form-input" v-model="taskName" placeholder="Run, rest, eat..." required>
+        <button v-if="!hasStarted" class="start-button" @click="startTask">Start</button>
+        <button v-if="hasStarted" class="stop-button" @click="stopTask">Stop</button>
+      </div>
     </div>
+    <div id="task" v-if="task !== null">
+    <h2>New task:</h2>
+      <div>
+        <p>Name: {{ task.name }}</p>
+        <p>Started at: {{ task.startedAt }}</p>
+      </div>
     </div>
     <div id="tasks" v-if="tasks.length !== 0">
-    <h2>Your tasks:</h2>
+      <h2>Your tasks:</h2>
+        <div>
+          <div v-for="(task, index) in tasks" :key="task.id">
+              <p>{{index}}</p>
+              <p>{{task.name}}</p>
+              <p>{{task.startedAt}}</p>
+              <p>{{task.id}}</p>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -36,11 +51,13 @@ export default {
       this.task = {
         id: 1,
         name: this.taskName,
-        startTime: DateTime.now()
+        startTime: DateTime.now().ts
       }
+      this.tasks.push(this.task)
     },
     stopTask() {
       this.hasStarted = false
+
     }
   }
 }

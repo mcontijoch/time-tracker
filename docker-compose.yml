@@ -1,0 +1,25 @@
+version: '3'
+services:
+  time-tracker-api:
+    build:
+      context: time-tracker-api
+      dockerfile: docker/Dockerfile
+    container_name: time-tracker-api
+    working_dir: /var/www/html
+    volumes:
+      - ./time-tracker-api:/var/www/html
+    ports:
+      - "8000:8000"
+
+  time-tracker-app:
+    build:
+      context: time-tracker-app
+      dockerfile: docker/Dockerfile
+    container_name: time-tracker-app
+    working_dir: /usr/src/app
+    volumes:
+      - ./time-tracker-app:/usr/src/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - time-tracker-api
